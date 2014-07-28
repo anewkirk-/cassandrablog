@@ -1,4 +1,4 @@
-package g7.gui;
+package edu.neumont.dbt230.anewkirk.cassandra.gui.gui;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
