@@ -23,25 +23,25 @@ public class TestClient {
 	
 	public void createSchema() {
 		
-		System.out.println("[+] Creating keyspace....");
-		session.execute("CREATE KEYSPACE \"blog\" WITH REPLICATION = {'class':'SimpleStrategy', 'replication_factor':3}");
+//		System.out.println("[+] Creating keyspace....");
+//		session.execute("CREATE KEYSPACE \"blog\" WITH REPLICATION = {'class':'SimpleStrategy', 'replication_factor':3}");
 		
 		System.out.println("[+] Creating columnfamily blog.users...");
-		session.execute("CREATE COLUMNFAMILY blog.users (" +  "username text PRIMARY KEY" + ");");
+		session.execute("CREATE COLUMNFAMILY blog.users (" +  "username text," +  "firstname text," + "lastname text," + "PRIMARY KEY (username)" + ");");
 		
-		System.out.println("[+] Creating columnfamily blog.posts...");
-		session.execute("CREATE COLUMNFAMILY blog.posts (" + "id timeuuid PRIMARY KEY," +
-		"username text," + "title text," + "content text" + ");");
-		
-		System.out.println("[+] Creating columnfamily blog.comments...");
-		session.execute("CREATE COLUMNFAMILY blog.comments(" + "id timeuuid PRIMARY KEY," +
-		"username text," + "content text," + "postid text" + ");");
+//		System.out.println("[+] Creating columnfamily blog.posts...");
+//		session.execute("CREATE COLUMNFAMILY blog.posts (" + "id timeuuid PRIMARY KEY," +
+//		"username text," + "title text," + "content text" + ");");
+//		
+//		System.out.println("[+] Creating columnfamily blog.comments...");
+//		session.execute("CREATE COLUMNFAMILY blog.comments(" + "id timeuuid PRIMARY KEY," +
+//		"username text," + "content text," + "postid text" + ");");
 		
 	}
 	
 	public void createTestUser() {
 		System.out.println("Inserting user \"testuser\"");
-		session.execute("INSERT INTO blog.users (username) " + "VALUES (" + "'testuser'" + ");");
+		session.execute("INSERT INTO blog.users (username, firstname, lastname) " + "VALUES (" + "'testuser'," + "'Test'," + "'User'" + ");");
 	}
 	
 	public void queryBlogUsers() {
@@ -69,7 +69,7 @@ public class TestClient {
 	private void close() {
 		cluster.close();
 	}
-
+	
 	public static void main(String[] args) {
 		try {
 			TestClient client = new TestClient();
@@ -77,10 +77,10 @@ public class TestClient {
 			//Azure box public IP
 			client.connect("137.135.56.72");
 			
-//			client.createSchemaForBlog();
-//			client.createTestUserForBlog();
+			client.createSchema();
+			client.createTestUser();
 			
-			client.queryBlogUsers();
+//			client.queryBlogUsers();
 			
 			
 			client.close();
