@@ -6,7 +6,7 @@ import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 
-import edu.neumont.dbt230.anewkirk.cassandra.model.*;
+import edu.neumont.dbt230.anewkirk.cassandra.model.BlogPost;
 
 public class TestClient {
 
@@ -26,16 +26,22 @@ public class TestClient {
 //		System.out.println("[+] Creating keyspace....");
 //		session.execute("CREATE KEYSPACE \"blog\" WITH REPLICATION = {'class':'SimpleStrategy', 'replication_factor':3}");
 		
-		System.out.println("[+] Creating columnfamily blog.users...");
-		session.execute("CREATE COLUMNFAMILY blog.users (" +  "username text," +  "firstname text," + "lastname text," + "PRIMARY KEY (username)" + ");");
+//		System.out.println("[+] Creating columnfamily blog.users...");
+//		session.execute("CREATE COLUMNFAMILY blog.users (" +  "username text," +  "firstname text," + "lastname text," + "PRIMARY KEY (username)" + ");");
 		
 //		System.out.println("[+] Creating columnfamily blog.posts...");
-//		session.execute("CREATE COLUMNFAMILY blog.posts (" + "id timeuuid PRIMARY KEY," +
-//		"username text," + "title text," + "content text" + ");");
+//		session.execute("CREATE COLUMNFAMILY blog.posts (" + "id uuid," +
+//		"username text," + "title text," + "content text," + "PRIMARY KEY (id, username)" + ");");
 //		
 //		System.out.println("[+] Creating columnfamily blog.comments...");
 //		session.execute("CREATE COLUMNFAMILY blog.comments(" + "id timeuuid PRIMARY KEY," +
 //		"username text," + "content text," + "postid text" + ");");
+		
+	}
+	
+	public void createTestPost() {
+		System.out.println("Inserting test blog post by testuser");
+		session.execute("INSERT INTO blog.posts (id, username, title, content) " +  "VALUES (7c2766e0-1696-11e4-8c21-0800200c9a66, 'testuser', 'This is a title', 'some blog content');");
 		
 	}
 	
@@ -51,6 +57,14 @@ public class TestClient {
 			    System.out.println(String.format("%-30s\n%s", "-------------------------------|", row.getString("username")));
 			}
 			System.out.println();
+	}
+	
+	public void queryBlogPosts() {
+		ResultSet results = session.execute("SELECT * FROM blog.posts;");
+		System.out.println(String.format(""));
+		for (Row row : results) {
+			System.out.println(String.format("%s\t%s\t%s\t\t%s", row.getUUID("id"), row.getString("username"), row.getString("title"), row.getString("content")));
+		}
 	}
 	
 	public void insertNewUser(String username) {
@@ -77,9 +91,12 @@ public class TestClient {
 			//Azure box public IP
 			client.connect("137.135.56.72");
 			
-			client.createSchema();
-			client.createTestUser();
+//			client.createSchema();
 			
+//			client.createTestPost();
+//			client.createTestUser();
+			
+			client.queryBlogPosts();
 //			client.queryBlogUsers();
 			
 			
