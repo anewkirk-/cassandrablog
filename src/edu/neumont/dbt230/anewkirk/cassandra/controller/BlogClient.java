@@ -46,6 +46,12 @@ public class BlogClient {
 				+ " PRIMARY KEY(postid, timestamp));");
 
 	}
+	
+	public User getUser(String userName)
+	{
+		Row user = session.execute("SELECT * FROM blog.users WHERE username = '" + userName + "'" ).one();
+		return new User(userName, user.getString("firstname"), user.getString("lastname"));		
+	}
 
 	public void deleteSchema() {
 		session.execute("DROP KEYSPACE blog;");
@@ -113,12 +119,12 @@ public class BlogClient {
 	}
 
 	public void insertNewUser(User user) {
-		session.execute("INSERT INTO blog.users(username, firstname, lastname) VALUES ("
+		session.execute("INSERT INTO blog.users(username, firstname, lastname) VALUES ('"
 				+ user.getUsername()
-				+ ","
+				+ "','"
 				+ user.getFirstname()
-				+ ","
-				+ user.getLastname() + ");");
+				+ "','"
+				+ user.getLastname() + "');");
 	}
 
 	public void insertNewPost(BlogPost post) {
@@ -147,10 +153,7 @@ public class BlogClient {
 		ResultSet results = session
 				.execute("SELECT * FROM blog.users WHERE username = '"
 						+ username + "';");
-		if (results != null) {
-			return true;
-		}
-		return false;
+		return results.all().size() > 0;
 	}
 
 	public void close() {

@@ -1,8 +1,12 @@
 package edu.neumont.dbt230.anewkirk.cassandra.view;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+
+import com.datastax.driver.core.Session;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
 import edu.neumont.dbt230.anewkirk.cassandra.controller.BlogClient;
 import edu.neumont.dbt230.anewkirk.cassandra.model.BlogComment;
@@ -25,6 +29,7 @@ public class ConsoleView {
 		//login
 		
 		//menustuffhere
+		loginCheck();
 		mainMenu();
 		client.close();
 	}
@@ -71,6 +76,55 @@ public class ConsoleView {
 		case 2:
 			break;
 		}
+	}
+	public static void loginCheck()
+	{
+		ArrayList<String> options = new ArrayList<String>();
+		options.add("Login");
+		options.add("Create New User");
+		switch( getMenuSelection("::Hello::", options))
+		{
+			case 0:
+				String uName = getStringFromUser("::Whats your UserName?::");
+				if(isValidUser(uName))
+				{
+					user = client.getUser(uName);
+					System.out.println(String.format("Welcome : %s", uName));
+				}
+				else
+				{
+					System.out.println(String.format("%s is not a valid UserName", uName));
+				}
+				break;
+			case 1:
+				User newUser = createNewUser(askForUserCreds());
+				user = newUser;
+				client.insertNewUser(newUser);
+				break;	
+		}
+		
+	}
+	
+	public static boolean isValidUser(String userName)
+	{
+		return client.userExists(userName);
+	}
+	
+	public static List<String> askForUserCreds()
+	{
+		List<String> creds = new ArrayList<String>();
+		String userName = getStringFromUser("::What will be your new UserName?:: ");
+		creds.add(userName);
+		String fName = getStringFromUser("::Please enter your First Name: ");
+		creds.add(fName);
+		String lName = getStringFromUser("::Please enter your Last Name: ");
+		creds.add(lName);
+		return creds;
+	}
+	
+	private static User createNewUser(List<String> creds)
+	{
+		return new User(creds.get(0), creds.get(1), creds.get(2));
 	}
 	
 	private static String buildTimestamp() {
