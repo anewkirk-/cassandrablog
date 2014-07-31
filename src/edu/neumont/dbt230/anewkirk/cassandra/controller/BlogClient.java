@@ -106,7 +106,8 @@ public class BlogClient {
 						+ postid + ";");
 		for (Row row : results) {
 			comments.add(new BlogComment(row.getString("username"), row
-					.getString("content"), row.getUUID("postid").toString(), row.getString("timestamp")));
+					.getString("content"), row.getUUID("postid").toString(),
+					row.getString("timestamp")));
 		}
 		return comments;
 	}
@@ -135,7 +136,10 @@ public class BlogClient {
 
 	public void insertNewComment(BlogComment comment) {
 		session.execute("INSERT INTO blog.comments(username, content, postid, timestamp) VALUES ('"
-				+ comment.getAuthor() + "', '" + comment.getContent() + "', "
+				+ comment.getAuthor()
+				+ "', '"
+				+ comment.getContent()
+				+ "', "
 				+ comment.getPostID() + ", '" + comment.getTimeStamp() + "');");
 	}
 
@@ -160,15 +164,13 @@ public class BlogClient {
 			// Azure box public IP
 			client.connect("137.135.56.72");
 
-//			 client.createSchema();
-
-			// client.createTestPost();
-			// client.createTestUser();
-
-			// client.queryBlogPosts();
-			// client.queryBlogUsers();
-
-//			 client.deleteSchema();
+//			client.createSchema();
+//			client.createTestPost();
+//			client.createTestUser();
+//			client.queryBlogPosts();
+//			client.queryBlogUsers();
+//			client.deleteSchema();
+			
 			client.close();
 			System.out.println("[!] Done.");
 		} catch (Exception e) {
