@@ -1,43 +1,47 @@
 package edu.neumont.dbt230.anewkirk.cassandra.model;
 
-import java.util.GregorianCalendar;
-
-public class BlogComment 
-{
+public class BlogComment {
 	private String commentAuthor;
 	private String content;
-	private String title;
-	private int postID;
-	private GregorianCalendar timeStamp;
+	private String postID;
+	private String timeStamp;
 	
+	public BlogComment(String author, String content, String postID, String timeStamp) {
+		this.commentAuthor = author;
+		this.content = content;
+		this.postID = postID;
+		this.timeStamp = timeStamp;
+	}
+
 	public String getAuthor() {
 		return commentAuthor;
 	}
+
 	public void setAuthor(String author) {
 		this.commentAuthor = author;
 	}
+
 	public String getContent() {
 		return content;
 	}
+
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	public int getPostID() {
+
+	public String getPostID() {
 		return postID;
 	}
-	public void setPostID(int postID) {
+
+	public void setPostID(String postID) {
 		this.postID = postID;
 	}
-	public GregorianCalendar getTimeStamp() {
+
+	public String getTimeStamp() {
 		return timeStamp;
 	}
-	public void setTimeStamp(GregorianCalendar timeStamp) {
+
+	public void setTimeStamp(String timeStamp) {
 		this.timeStamp = timeStamp;
 	}
 }
