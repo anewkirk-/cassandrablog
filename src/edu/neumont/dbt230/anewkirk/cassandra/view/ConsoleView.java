@@ -94,13 +94,18 @@ public class ConsoleView {
 				else
 				{
 					System.out.println(String.format("%s is not a valid UserName", uName));
+					loginCheck();
 				}
 				break;
 			case 1:
 				User newUser = createNewUser(askForUserCreds());
-				user = newUser;
 				client.insertNewUser(newUser);
-				break;	
+				user = newUser;
+				break;
+			default:
+				System.out.println("There was an internal indexing error in loginCheck()");
+				break;
+					
 		}
 		
 	}
